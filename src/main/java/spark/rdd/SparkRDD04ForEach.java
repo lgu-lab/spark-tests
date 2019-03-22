@@ -36,13 +36,14 @@ public class SparkRDD04ForEach {
 		
 		
 		System.out.println("----------");
-
+		
 		// 4 partitions => 4 tasks 
 		numbersRDD.foreach(item -> {  // "foreach" is an ACTION 
 		    TaskContext tc = TaskContext.get();
 		    long taskId = tc.taskAttemptId();
+		    int partitionId = TaskContext.getPartitionId();
             System.out.println("* " + item 
-            		+ " (Partition id : " + TaskContext.getPartitionId() + ")" 
+            		+ " (Partition id : " + partitionId + ")" 
             		+ " (Task id : " + taskId + ")"); 
         });
 		
