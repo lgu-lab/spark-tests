@@ -23,9 +23,9 @@ public class SparkDataset01 {
     	SparkSession sparkSession = SparkSession.builder()
     			.appName("SparkTests")
     			//.master("local") // default : 1 partition --> 1 task
-//    			.master("local[6]") // 6 partitions --> 6 tasks
-//    			.master("local[2]") // 2 partitions --> 2 tasks
-    			.master("local[12]") // real : 8 partitions --> 8 tasks (limitation ?)
+//    			.master("local[6]") // 6 partitions --> 6 tasks => 27 sec 
+//    			.master("local[2]") // 2 partitions --> 2 tasks => 82 sec
+    			.master("local[12]") // real : 8 partitions --> 8 tasks (limitation ?) => 20 sec
     			.getOrCreate();
     	
 		System.out.println("SparkSession ready.");
