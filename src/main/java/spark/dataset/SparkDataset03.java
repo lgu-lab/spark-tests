@@ -9,7 +9,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.StructType;
 
-public class SparkDataset02 {
+public class SparkDataset03 {
 	
 	public static void flushOutput() {
 		System.err.flush();
@@ -43,12 +43,14 @@ public class SparkDataset02 {
 		System.out.println("File loaded."); // Not realy loaded
 		flushOutput();
 
-		// TRANSFORMATION : map to INT
-		Dataset<Integer> dataset = ds0.map((MapFunction<Row, Integer>)row -> { 
-			String s = row.<String>getAs("Id");
-			int i = Integer.parseInt(s.trim());
-			return i ;
-			}, Encoders.INT());
+		// TRANSFORMATION : map to PERSON 
+		Dataset<Person> dataset = ds0.map((MapFunction<Row, Person>)row -> { 
+			//String s = row.<String>getAs("Id");
+			int id = Integer.parseInt( row.<String>getAs("Id").trim() );
+			String firstName = row.<String>getAs("FirstName").trim() ;
+			String lastName = row.<String>getAs("LastName").trim() ;
+			return new Person(id, firstName, lastName) ;
+			}, Encoders.bean(Person.class) );
 		
 		System.out.println("Get schema : dataset.schema()...");
     	StructType datasetSchema =  dataset.schema() ;
