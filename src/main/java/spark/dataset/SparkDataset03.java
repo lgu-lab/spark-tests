@@ -1,13 +1,11 @@
 package spark.dataset;
 
-import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.DataFrameReader;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.types.StructType;
 
 public class SparkDataset03 {
 	
@@ -30,7 +28,7 @@ public class SparkDataset03 {
     	String csv_file = "D:/TMP/csv-files/person.csv";
     	
 		
-		System.out.println("Creating DataFrameReader...");    	
+		System.out.println("Creating DataFrameReader...");
     	DataFrameReader dfr = sparkSession.read()
 	    	.option("header",    "true")
 	    	.option("delimiter", ";")
@@ -43,44 +41,27 @@ public class SparkDataset03 {
 		System.out.println("File loaded."); // Not realy loaded
 		flushOutput();
 
+//		// TRANSFORMATION : map to PERSON 
+//		Dataset<Person> dataset = ds0.map((MapFunction<Row, Person>)row -> { 
+//			//String s = row.<String>getAs("Id");
+//			int id = Integer.parseInt( row.<String>getAs("Id").trim() );
+//			String firstName = row.<String>getAs("FirstName").trim() ;
+//			String lastName = row.<String>getAs("LastName").trim() ;
+//			return new Person(id, firstName, lastName) ;
+//			}, Encoders.bean(Person.class) );
+		
+		MapFunction<Row, Person> mapFunction = new PersonMapping();
+    	PersonProcessing processingFunction = new PersonProcessing();
+		
+		
 		// TRANSFORMATION : map to PERSON 
-		Dataset<Person> dataset = ds0.map((MapFunction<Row, Person>)row -> { 
-			//String s = row.<String>getAs("Id");
-			int id = Integer.parseInt( row.<String>getAs("Id").trim() );
-			String firstName = row.<String>getAs("FirstName").trim() ;
-			String lastName = row.<String>getAs("LastName").trim() ;
-			return new Person(id, firstName, lastName) ;
-			}, Encoders.bean(Person.class) );
+		Dataset<Person> dataset = ds0.map(mapFunction, Encoders.bean(Person.class) );
 		
-		System.out.println("Get schema : dataset.schema()...");
-    	StructType datasetSchema =  dataset.schema() ;
-    	System.out.println("Dataset schema : " + datasetSchema );
-		flushOutput();
-
-		// ACTION
-		System.out.println("Get count : dataset.count()...");
-    	long datasetCount = dataset.count() ;  // ACTION => read file (N partitions => N read tasks )
-    	System.out.println("Dataset count  : " + datasetCount);
-		flushOutput();
-
-		
-
-		// ACTION
+		// ACTION : foreach
     	System.out.println("foreach : starting tasks... " ); 	
 		flushOutput();
-    	dataset.foreach(item -> {  // "foreach" is an ACTION 
-    		
-		    TaskContext tc = TaskContext.get();
-		    long taskId = tc.taskAttemptId();
-		    int partitionId = TaskContext.getPartitionId(); // get from ThreadLocal ?
-	            System.out.println("* " + item
-        		+ " (Partition id : " + partitionId + ")" 
-        		+ " (Stage id : " + tc.stageId() + ")"
-        		+ " (Task id : " + taskId + ")"
-        		);
-    		});
+    	dataset.foreach(processingFunction);
     	System.out.println("foreach : done. " ); 	
 		flushOutput();
 	}
-	
 }
