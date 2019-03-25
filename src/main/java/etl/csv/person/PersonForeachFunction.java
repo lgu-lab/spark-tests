@@ -3,7 +3,7 @@ package etl.csv.person;
 import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.function.ForeachFunction;
 
-public class PersonProcessing implements ForeachFunction<Person> {
+public class PersonForeachFunction implements ForeachFunction<Person> {
 
 	private static final long serialVersionUID = 1L;
 

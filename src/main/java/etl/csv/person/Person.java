@@ -7,6 +7,20 @@ public class Person {
 	private String lastName ;
 	
 	
+	/**
+	 * Default constructor 
+	 * NB : Zero Argument Constructor is mandatory for each bean 
+	 */
+	public Person() {
+		super();
+	}
+
+	/**
+	 * Constructor
+	 * @param id
+	 * @param firtName
+	 * @param lastName
+	 */
 	public Person(int id, String firtName, String lastName) {
 		super();
 		this.id = id;
