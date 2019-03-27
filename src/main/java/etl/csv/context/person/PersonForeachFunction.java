@@ -29,6 +29,7 @@ public class PersonForeachFunction extends AbstractScriptExecutor implements For
 		// DO SOMETHING HERE WITH THE GIVEN BEAN INSTANCE....
 		System.out.println("  row before script : " + genericRow);
 
+		// TRANSFORM THE CURRENT ROW USING A SCRIPT 
 		executeScript(genericRow.getMap());
 		
 		System.out.println("  row after script  : " + genericRow);

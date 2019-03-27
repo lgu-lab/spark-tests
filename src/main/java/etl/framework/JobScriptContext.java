@@ -22,7 +22,6 @@ public abstract class JobScriptContext {
 	
 	/**
 	 * Constructor 
-	 * @param beanClass
 	 * @param jobName the 'application name' for the job (used as 'appName(jobName)' ) 
 	 * @param jobMaster the 'master' configuration for the job e.g. 'local[4]' (used by 'master("local[4]")' ) 
 	 * @param filePath

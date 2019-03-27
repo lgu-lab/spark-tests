@@ -5,6 +5,12 @@ import java.util.Map;
 
 import etl.framework.JobScriptContext;
 
+/**
+ * Job definition to process a file 
+ * 
+ * @author laguerin
+ *
+ */
 public class PersonJob extends JobScriptContext {
 	
 	/**
