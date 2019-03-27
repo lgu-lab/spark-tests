@@ -1,11 +1,17 @@
-package etl.csv.person;
+package etl.csv.person.generic;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import etl.framework.Job;
+import etl.framework.JobScriptContext;
 
-public class PersonJob extends Job<Person> {
+/**
+ * Job definition to process a file 
+ * 
+ * @author laguerin
+ *
+ */
+public class PersonJob extends JobScriptContext {
 	
 	/**
 	 * Input file path
@@ -26,15 +32,20 @@ public class PersonJob extends Job<Person> {
 	 */
 	public PersonJob() {
 		
-		super(Person.class, 
-				"PersonJob", 
+		super(	"PersonJob", 
 				"local[4]", 
 				FILE_PATH, 
 				new PersonMapFunction() );
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
+		String script = "" 
+				+ "print('In Javascript');"
+				+ "// Compute  \n"
+				+ "id = id + 100 ; \n"
+				;
+
 		// Job initialization 
 		PersonJob job = new PersonJob();
 		job.setReaderOptions(readerOptions);
@@ -49,7 +60,7 @@ public class PersonJob extends Job<Person> {
 //		Person person = job.first();
 //		System.out.println("First is " + person);
 
-		job.foreach( new PersonForeachFunction() );
+		job.foreach( new PersonForeachFunction(script) );
 		
 //		Dataset<String> dsJSON = job.toJSON();
 //		System.out.println("First is " + dsJSON.first());

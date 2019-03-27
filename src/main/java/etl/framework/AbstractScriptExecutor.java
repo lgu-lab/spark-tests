@@ -13,11 +13,11 @@ import javax.script.ScriptException;
  * This class MUST BE SERIALIZABLE in order to be used with Spark 
  * 
  * NB : NashornScriptEngine is not serializable 
- * Error 
- *   Exception in thread "main" org.apache.spark.SparkException: Task not serializable
- *   Caused by: java.io.NotSerializableException: jdk.nashorn.api.scripting.NashornScriptEngine$3
+ *   Error :
+ *     Exception in thread "main" org.apache.spark.SparkException: Task not serializable
+ *     Caused by: java.io.NotSerializableException: jdk.nashorn.api.scripting.NashornScriptEngine$3
  * 
- *  
+ * So the script must be stored in a String (and compiled after Serialization/Deserialization)
  * 
  * @author l.guerin
  *
@@ -63,7 +63,6 @@ public abstract class AbstractScriptExecutor implements Serializable {
 	
 	public void executeScript( Map<String,Object> map ) throws Exception {
 		
-		System.out.println("executeScript(map)...");
 		CompiledScript cs = getCompiledScript();
 		if ( cs != null ) {
 			ScriptEngine scriptEngine = compiledScript.getEngine();
@@ -74,7 +73,6 @@ public abstract class AbstractScriptExecutor implements Serializable {
 			}
 			
 			// Run script evaluation 
-			System.out.println("compiledScript.eval()...");
 			try {
 				cs.eval();
 			} catch (ScriptException e) {
@@ -85,9 +83,6 @@ public abstract class AbstractScriptExecutor implements Serializable {
 			for ( Map.Entry<String,Object> entry : map.entrySet() ) {
 				entry.setValue(scriptEngine.get(entry.getKey()));
 			}
-		}
-		else {
-			System.out.println("compiledScript is null ");
 		}
 	}
 	

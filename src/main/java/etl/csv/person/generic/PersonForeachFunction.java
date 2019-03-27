@@ -1,4 +1,4 @@
-package etl.csv.context.person;
+package etl.csv.person.generic;
 
 import org.apache.spark.TaskContext;
 import org.apache.spark.api.java.function.ForeachFunction;

@@ -1,4 +1,4 @@
-package etl.csv.context.person;
+package etl.csv.person.generic;
 
 import java.util.Map;
 

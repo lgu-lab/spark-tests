@@ -1,4 +1,4 @@
-package etl.csv.person;
+package etl.csv.person.bean;
 
 public class Person {
 
