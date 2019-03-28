@@ -1,9 +1,9 @@
-package etl.csv.person.generic;
+package etl.csv.books;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import etl.framework.JobScriptContext;
+import etl.framework.JobScriptContextRow;
 
 /**
  * Job definition to process a file 
@@ -11,18 +11,18 @@ import etl.framework.JobScriptContext;
  * @author laguerin
  *
  */
-public class PersonJob extends JobScriptContext {
+public class BookJob extends JobScriptContextRow {
 	
 	/**
 	 * Input file path
 	 */
-	private final static String INPUT_FILE_PATH = "D:/TMP/csv-files/person.csv";
+	private final static String INPUT_FILE_PATH = "D:/TMP/csv-files/books.csv";
 	// Other example : "hdfs://localhost:9002/data/data.csv"
 	
 	/**
 	 * Output file path
 	 */
-	private final static String OUTPUT_FILE_PATH = "D:/TMP/csv-files/person-result.csv";
+	private final static String OUTPUT_FILE_PATH = "D:/TMP/csv-files/books-result.csv";
 	
 	/**
 	 * Input file reader options
@@ -36,12 +36,12 @@ public class PersonJob extends JobScriptContext {
 	/**
 	 * Job constructor
 	 */
-	public PersonJob() {
+	public BookJob() {
 		
 		super(	"PersonJob", 
 				"local[4]", 
-				INPUT_FILE_PATH, 
-				new PersonMapFunction() );
+				INPUT_FILE_PATH
+			);
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -53,7 +53,7 @@ public class PersonJob extends JobScriptContext {
 				;
 
 		// Job initialization 
-		PersonJob job = new PersonJob();
+		BookJob job = new BookJob();
 		job.setReaderOptions(readerOptions);
 
 		//Dataset<Person> ds = job.getDataset();
@@ -66,11 +66,13 @@ public class PersonJob extends JobScriptContext {
 //		Person person = job.first();
 //		System.out.println("First is " + person);
 
-		job.foreach( new PersonForeachFunction(script) );
+		job.foreach( new BookForeachFunction(script) );
 		
 //		Dataset<String> dsJSON = job.toJSON();
 //		System.out.println("First is " + dsJSON.first());
 //	
+//		job.save("hdfs://localhost:9002/data/data.csv");
+		job.save(OUTPUT_FILE_PATH);
 
 	}
 }
