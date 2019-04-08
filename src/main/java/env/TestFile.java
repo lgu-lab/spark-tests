@@ -14,9 +14,9 @@ public class TestFile {
 	// Standard file
 	private final static String FILE_PATH = "D:/TMP/csv-files/books.csv" ;
 
-	// HDFS file
+	// HDFS file : "hdfs://host:port/file"
 	//private final static String FILE_PATH = "hdfs://user/hdfs/my_props.txt" ;
-	//private final static String FILE_PATH = "hdfs://host:9000/path/my_props.txt" ;
+	//private final static String FILE_PATH = "hdfs://host:9000/mypath/myfile.txt" ;
 			
 	public static void main(String[] args) throws Exception {
 
